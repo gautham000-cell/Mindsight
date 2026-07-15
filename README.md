@@ -5,14 +5,12 @@
 
 An end-to-end **Machine Learning**, **Statistical Analysis**, and **Flask Web Application** that predicts mental health risk levels using validated clinical assessment scores, demographic information, and lifestyle factors.
 
-<p>
+<p align="center">
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python)
-![Flask](https://img.shields.io/badge/Flask-3.x-black?style=for-the-badge&logo=flask)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Machine%20Learning-orange?style=for-the-badge&logo=scikit-learn)
-![XGBoost](https://img.shields.io/badge/XGBoost-Classifier-success?style=for-the-badge)
-![Pandas](https://img.shields.io/badge/Pandas-Data%20Analysis-150458?style=for-the-badge&logo=pandas)
-![NumPy](https://img.shields.io/badge/NumPy-Scientific%20Computing-013243?style=for-the-badge&logo=numpy)
+![Flask](https://img.shields.io/badge/Flask-Web_App-black?style=for-the-badge&logo=flask)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Machine_Learning-orange?style=for-the-badge&logo=scikit-learn)
+![XGBoost](https://img.shields.io/badge/XGBoost-Best_Model-success?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-brightgreen?style=for-the-badge)
 
 </p>
@@ -23,161 +21,142 @@ An end-to-end **Machine Learning**, **Statistical Analysis**, and **Flask Web Ap
 
 ---
 
-# 📖 Project Overview
+# 📖 Overview
 
-**MindSight** is an end-to-end **Artificial Intelligence and Machine Learning** application designed to predict an individual's mental health risk level through a combination of validated psychological assessment tools, lifestyle indicators, demographic information, and health history.
+**MindSight** is an end-to-end Artificial Intelligence and Machine Learning application that predicts an individual's mental health risk level using validated clinical assessment scores, demographic information, lifestyle factors, and health history.
 
-The project demonstrates a complete Data Science workflow including:
+The project demonstrates the complete Machine Learning lifecycle—from data generation and preprocessing to model training, statistical analysis, deployment, and interactive visualization through a Flask web application.
 
-- Data Generation
-- Data Preprocessing
-- Statistical Analysis
-- Machine Learning Model Training
-- Model Evaluation
-- Feature Analysis
-- Interactive Dashboard
-- Web Deployment
+---
 
-The system classifies individuals into three mental health risk categories:
+# 🎯 Objectives
 
-| Risk Level | Description |
-|------------|-------------|
-| 🟢 Low | Minimal symptoms with low mental health risk |
-| 🟡 Moderate | Noticeable symptoms requiring monitoring |
-| 🔴 High | Significant symptoms that may require professional attention |
-
-> **Note:** This project is intended for educational and research purposes only.
+- Predict mental health risk levels accurately
+- Compare multiple Machine Learning algorithms
+- Perform statistical analysis on mental health indicators
+- Visualize insights through interactive dashboards
+- Deploy the trained model as a Flask web application
 
 ---
 
 # ✨ Key Features
 
-| Category | Features |
-|-----------|----------|
-| 🤖 Machine Learning | Multiple classification algorithms with automated model comparison |
-| 📊 Statistical Analysis | Descriptive statistics, ANOVA, correlation analysis |
-| 📈 Data Visualization | Seven analytical charts generated automatically |
-| 🌐 Flask Application | Responsive web interface with prediction API |
-| 📋 Mental Health Screening | Multi-step assessment with instant prediction |
-| 📦 Model Persistence | Trained models saved using Joblib |
-| 📉 Performance Evaluation | Cross-validation, Accuracy, F1, ROC-AUC |
+| Category | Description |
+|----------|-------------|
+| 🤖 Machine Learning | Four classification algorithms |
+| 📊 Statistical Analysis | Descriptive Statistics, ANOVA, Correlation |
+| 📈 Data Visualization | Seven analytical charts |
+| 🌐 Web Dashboard | Interactive Flask application |
+| 📝 Mental Health Screening | Multi-step prediction form |
+| 📦 Model Persistence | Saved models using Joblib |
+| 📉 Performance Evaluation | Accuracy, F1 Score, ROC-AUC |
 
 ---
 
 # 🧠 Machine Learning Models
 
-| Model | Algorithm Type | Purpose |
-|--------|---------------|----------|
+| Model | Type | Purpose |
+|--------|------|----------|
 | Logistic Regression | Linear Classifier | Baseline Model |
-| Random Forest | Ensemble Learning | Tree-Based Classification |
-| Gradient Boosting | Boosting Ensemble | Improved Predictive Performance |
-| ⭐ XGBoost | Gradient Boosting | Final Best Performing Model |
+| Random Forest | Ensemble Learning | Robust Classification |
+| Gradient Boosting | Boosting Ensemble | Improved Accuracy |
+| ⭐ XGBoost | Gradient Boosting | Best Performing Model |
 
 ---
 
-# 📊 Model Evaluation Strategy
+# 📊 Evaluation Metrics
 
 | Metric | Description |
 |---------|-------------|
-| Cross Validation | 5-Fold Stratified Cross Validation |
 | Accuracy | Overall prediction accuracy |
 | Precision | Positive prediction quality |
-| Recall | Sensitivity of predictions |
-| F1-Score | Weighted performance metric |
+| Recall | Detection capability |
+| Weighted F1-Score | Balanced performance |
 | ROC-AUC | Classification capability |
+| Cross Validation | 5-Fold Stratified CV |
 
 ---
 
-# 📂 Dataset Information
+# 📋 Dataset Features
 
-The model is trained using **19 carefully selected features** representing demographic, psychological, lifestyle, and clinical information.
+The prediction model uses **19 mental health indicators**.
 
-| Feature Category | Variables |
-|------------------|-----------|
-| Demographics | Age, Gender, Occupation |
-| Lifestyle | Sleep Hours, Physical Activity, Screen Time, Social Support, Work-Life Balance |
-| Psychological | Stress Level, Self-Esteem, Coping Skills, Mindfulness |
-| Clinical Assessments | PHQ-9 Score, GAD-7 Score, PSS Score |
-| Health History | Family History, Chronic Illness, Substance Use, Previous Treatment |
+| Category | Features |
+|----------|----------|
+| 👤 Demographics | Age, Gender, Occupation |
+| 🏃 Lifestyle | Sleep Hours, Physical Activity, Screen Time, Social Support, Work-Life Balance |
+| 🧠 Psychological | Stress Level, Self-Esteem, Coping Skills, Mindfulness |
+| 🏥 Clinical | PHQ-9 Score, GAD-7 Score, PSS Score |
+| ❤️ Health History | Family History, Chronic Illness, Substance Use, Previous Treatment |
 
 ---
 
 # 📈 Statistical Analysis
 
-The project performs comprehensive statistical analysis before model training.
-
 | Analysis | Purpose |
 |----------|---------|
-| Descriptive Statistics | Understand feature distributions |
-| Mean & Standard Deviation | Central tendency and variability |
-| Skewness & Kurtosis | Distribution characteristics |
-| Pearson Correlation | Feature relationship analysis |
-| One-Way ANOVA | Compare statistical significance across risk groups |
+| Descriptive Statistics | Feature Summary |
+| Pearson Correlation | Relationship Analysis |
+| One-Way ANOVA | Statistical Significance |
+| Feature Importance | Model Interpretation |
 
 ---
 
-# 📊 Data Visualizations
-
-The application automatically generates the following analytical charts.
+# 📊 Generated Visualizations
 
 | Visualization | Description |
 |--------------|-------------|
-| Risk Distribution | Distribution of Low, Moderate and High Risk |
-| Model Comparison | Accuracy comparison across ML models |
-| Feature Importance | Most influential predictive variables |
-| Correlation Heatmap | Feature correlation matrix |
+| Risk Distribution | Mental health category distribution |
+| Model Comparison | Accuracy comparison of ML models |
+| Correlation Heatmap | Feature relationships |
+| Feature Importance | Most influential variables |
 | Confusion Matrix | Classification performance |
-| ROC Curve | Model discrimination capability |
-| Scatter Plot Analysis | Relationship between important variables |
+| ROC Curve | Model evaluation |
+| Scatter Plot | Feature relationship analysis |
 
 ---
 
 # 🌐 Web Application
 
-The Flask application consists of three major modules.
-
 | Page | Route | Description |
 |------|-------|-------------|
-| Home | `/` | Project overview and performance summary |
-| Dashboard | `/dashboard` | Interactive analytics and visualizations |
-| Screening | `/screening` | AI-powered mental health assessment |
+| 🏠 Home | `/` | Project overview and model summary |
+| 📊 Dashboard | `/dashboard` | Interactive analytics and charts |
+| 📝 Screening | `/screening` | Mental health assessment form |
 
 ---
 
-# ⚙️ Project Workflow
+# 🏗 Project Workflow
 
 ```text
-Data Collection
-       │
-       ▼
+Dataset Generation
+        │
+        ▼
 Data Preprocessing
-       │
-       ▼
-Exploratory Data Analysis
-       │
-       ▼
+        │
+        ▼
 Statistical Analysis
-       │
-       ▼
+        │
+        ▼
 Feature Engineering
-       │
-       ▼
-Machine Learning Training
-       │
-       ▼
+        │
+        ▼
+Model Training
+        │
+        ▼
 Cross Validation
-       │
-       ▼
+        │
+        ▼
 Model Evaluation
-       │
-       ▼
+        │
+        ▼
 Best Model Selection
-       │
-       ▼
-Model Deployment
-       │
-       ▼
-Flask Web Application
+        │
+        ▼
+Flask Deployment
+        │
+        ▼
+Web Application
 ```
 
 ---
@@ -187,12 +166,10 @@ Flask Web Application
 ## Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/MINDSIGHT-Mental-health-prediction-and-analysis-system.git
+git clone https://github.com/yourusername/MindSight.git
 
-cd MINDSIGHT-Mental-health-prediction-and-analysis-system
+cd MindSight
 ```
-
----
 
 ## Install Dependencies
 
@@ -202,36 +179,23 @@ pip install -r requirements.txt
 
 ---
 
-# ▶️ Training Pipeline
+# ▶️ Run the Project
 
-Execute the training pipeline.
+### Train Models
 
 ```bash
 python train_model.py
 ```
 
-### This process automatically:
-
-| Step | Description |
-|------|-------------|
-| Dataset Generation | Creates synthetic mental health dataset |
-| Data Analysis | Performs statistical analysis |
-| Model Training | Trains four machine learning models |
-| Cross Validation | Evaluates model performance |
-| Model Selection | Saves the best-performing model |
-| Visualization | Generates analytical charts |
-
----
-
-# ▶️ Launch the Application
+### Launch Flask Application
 
 ```bash
 python app.py
 ```
 
-Open your browser:
+Open your browser and visit:
 
-```
+```text
 http://localhost:5000
 ```
 
@@ -283,57 +247,67 @@ MindSight/
 | Programming Language | Python 3.11 |
 | Backend | Flask |
 | Machine Learning | Scikit-Learn, XGBoost |
-| Data Processing | Pandas, NumPy |
+| Data Analysis | Pandas, NumPy |
 | Statistical Analysis | SciPy |
 | Visualization | Matplotlib, Seaborn |
-| Model Storage | Joblib |
+| Model Serialization | Joblib |
 | Frontend | HTML5, CSS3, JavaScript |
 
 ---
 
 # 📌 Future Enhancements
 
-| Planned Feature | Status |
-|-----------------|--------|
-| Deep Learning Models | ⏳ Planned |
-| SHAP Explainable AI | ⏳ Planned |
-| PDF Report Generation | ⏳ Planned |
-| User Authentication | ⏳ Planned |
-| Database Integration | ⏳ Planned |
-| Docker Deployment | ⏳ Planned |
-| Cloud Deployment | ⏳ Planned |
-| Real Clinical Dataset Support | ⏳ Planned |
-
----
-
-# 📜 License
-
-This project is distributed under the **MIT License**.
+- Explainable AI (SHAP)
+- Deep Learning Models
+- PDF Report Generation
+- User Authentication
+- Docker Support
+- Cloud Deployment
+- Database Integration
+- Real Clinical Dataset
 
 ---
 
 # ⚠️ Disclaimer
 
-This application is intended solely for **educational, research, and demonstration purposes**.
+This project is intended **solely for educational and research purposes**.
 
-The predictions generated by this system **must not** be considered medical advice, diagnosis, or treatment. Individuals experiencing mental health concerns should consult a qualified healthcare professional.
+The predictions generated by this application should **not** be considered medical advice, diagnosis, or treatment. Individuals experiencing mental health concerns should seek guidance from qualified healthcare professionals.
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+If you'd like to improve this project:
+
+1. Fork the repository
+2. Create a new feature branch
+3. Commit your changes
+4. Push to your branch
+5. Open a Pull Request
+
+---
+
+# 📄 License
+
+This project is licensed under the **MIT License**.
 
 ---
 
 # 👨‍💻 Author
 
-| Name | Role |
-|------|------|
-| **Daksh_gp** | Machine Learning Engineer • Data Science Enthusiast • Python Developer |
+**Daksh_gp**
+
+Machine Learning • Data Science • Python • Flask
 
 ---
 
 <div align="center">
 
-### ⭐ If you found this project helpful, please consider giving it a Star.
+### ⭐ If you found this project useful, please consider giving it a Star!
 
 **Built with ❤️ using Python, Machine Learning, Flask, and Data Science**
 
 </div>
- 
- 
