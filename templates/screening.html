@@ -1,0 +1,386 @@
+{% extends "base.html" %}
+
+{% block title %}Mental Health Assessment - MindSight{% endblock %}
+
+{% block head %}
+<style>
+    .form-step {
+        display: none;
+    }
+
+    .form-step.active {
+        display: block;
+    }
+
+    .progress-bar {
+        transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    input[type="range"] {
+        accent-color: #6366f1;
+    }
+
+    .glass-input {
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-input:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+        outline: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-10">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold mb-4">MindSight <span class="text-indigo-400">Assessment</span></h1>
+        <p class="text-slate-400">Complete this comprehensive 19-factor screening for a precise mental health risk
+            analysis.</p>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="mb-12">
+        <div class="flex justify-between mb-4 text-xs font-bold uppercase tracking-widest text-slate-500">
+            <span id="step-count">Step 1 of 4</span>
+            <span id="step-percent">25% Complete</span>
+        </div>
+        <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+            <div id="progress-bar"
+                class="progress-bar h-full bg-indigo-600 w-1/4 shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+        </div>
+    </div>
+
+    <form id="screeningForm" class="glass-card p-10 rounded-[40px] relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-600/10 blur-3xl -mr-16 -mt-16"></div>
+
+        <!-- Step 1: Personal & Lifestyle -->
+        <div class="form-step active" id="step1">
+            <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
+                <i class="fas fa-user-circle text-indigo-400"></i>
+                Personal & Lifestyle
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-bold text-slate-400">Full Name</label>
+                    <input type="text" name="name" value="{{ current_user.first_name }} {{ current_user.last_name }}"
+                        class="glass-input rounded-xl p-4 text-white" required>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-bold text-slate-400">Age</label>
+                    <input type="number" name="age" value="25" class="glass-input rounded-xl p-4 text-white" required>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-bold text-slate-400">Gender</label>
+                    <select name="gender" class="glass-input rounded-xl p-4 text-white bg-slate-900">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Non-binary">Non-binary</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-bold text-slate-400">Occupation</label>
+                    <select name="occupation" class="glass-input rounded-xl p-4 text-white bg-slate-900">
+                        <option value="Student">Student</option>
+                        <option value="Corporate">Corporate</option>
+                        <option value="Self-Employed">Self-Employed</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-bold text-slate-400">Sleep Hours (per night)</label>
+                    <input type="number" step="0.5" name="sleep_hours" value="7"
+                        class="glass-input rounded-xl p-4 text-white">
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-bold text-slate-400">Daily Screen Time (hours)</label>
+                    <input type="number" step="0.5" name="screen_time" value="6"
+                        class="glass-input rounded-xl p-4 text-white">
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Well-being Metrics -->
+        <div class="form-step" id="step2">
+            <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
+                <i class="fas fa-heartbeat text-rose-400"></i>
+                Well-being Metrics
+            </h2>
+            <div class="space-y-10">
+                {% for field, label in [
+                ('stress_level', 'Self-Reported Stress Level (1-10)'),
+                ('physical_activity', 'Physical Activity Level (1-10)'),
+                ('social_support', 'Quality of Social Support (1-10)'),
+                ('work_life_balance', 'Work-Life Balance (1-10)'),
+                ('self_esteem', 'General Self-Esteem (1-10)'),
+                ('coping_skills', 'Emotional Coping Skills (1-10)'),
+                ('mindfulness_practice', 'Mindfulness/Meditation Frequency (1-10)')
+                ] %}
+                <div class="flex flex-col gap-4">
+                    <div class="flex justify-between items-center">
+                        <label class="text-slate-300 font-medium">{{ label }}</label>
+                        <span
+                            class="text-indigo-400 font-bold bg-indigo-400/10 px-3 py-1 rounded-lg border border-indigo-400/20"
+                            id="{{ field }}_val">5</span>
+                    </div>
+                    <input type="range" name="{{ field }}" min="1" max="10" value="5" step="0.1"
+                        class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer"
+                        oninput="document.getElementById('{{ field }}_val').textContent = this.value">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Step 3: Clinical Flags -->
+        <div class="form-step" id="step3">
+            <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
+                <i class="fas fa-file-medical-alt text-emerald-400"></i>
+                Medical History & Flags
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for field, label in [
+                ('family_history', 'Family History of Mental Health'),
+                ('chronic_illness', 'Presence of Chronic Illness'),
+                ('substance_use', 'Frequent Substance Use'),
+                ('previous_treatment', 'Previously Sought Treatment')
+                ] %}
+                <label
+                    class="flex items-center gap-4 p-6 glass-card rounded-2xl cursor-pointer hover:bg-slate-800 transition">
+                    <input type="checkbox" name="{{ field }}" value="1"
+                        class="w-6 h-6 rounded-lg bg-slate-900 border-slate-700 text-indigo-600 focus:ring-indigo-600">
+                    <span class="text-sm font-semibold">{{ label }}</span>
+                </label>
+                {% endfor %}
+            </div>
+            <div class="mt-10 p-6 bg-indigo-600/10 border border-indigo-500/20 rounded-2xl">
+                <p class="text-xs text-indigo-300 leading-relaxed">
+                    <i class="fas fa-info-circle mr-2"></i> Clinical flags help our models understand hereditary and
+                    historical contexts which significantly weight the overall risk score.
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 4: Diagnostic Scores -->
+        <div class="form-step" id="step4">
+            <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
+                <i class="fas fa-chart-bar text-purple-400"></i>
+                Standardized Clinical Scores
+            </h2>
+            <div class="space-y-8">
+                <div class="flex flex-col gap-4">
+                    <div class="flex justify-between items-center">
+                        <label class="text-sm font-bold text-slate-400 uppercase tracking-widest">PHQ-9 (Depression
+                            Index)</label>
+                        <span
+                            class="text-indigo-400 font-bold bg-indigo-400/10 px-3 py-1 rounded-lg border border-indigo-400/20"
+                            id="phq9_val">5</span>
+                    </div>
+                    <input type="range" name="phq9_score" min="1" max="10" value="5" step="0.1"
+                        class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer"
+                        oninput="document.getElementById('phq9_val').textContent = this.value">
+                </div>
+                <div class="flex flex-col gap-4">
+                    <div class="flex justify-between items-center">
+                        <label class="text-sm font-bold text-slate-400 uppercase tracking-widest">GAD-7 (Anxiety
+                            Index)</label>
+                        <span
+                            class="text-indigo-400 font-bold bg-indigo-400/10 px-3 py-1 rounded-lg border border-indigo-400/20"
+                            id="gad7_val">5</span>
+                    </div>
+                    <input type="range" name="gad7_score" min="1" max="10" value="5" step="0.1"
+                        class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer"
+                        oninput="document.getElementById('gad7_val').textContent = this.value">
+                </div>
+                <div class="flex flex-col gap-4">
+                    <div class="flex justify-between items-center">
+                        <label class="text-sm font-bold text-slate-400 uppercase tracking-widest">PSS Score (Perceived
+                            Stress)</label>
+                        <span
+                            class="text-indigo-400 font-bold bg-indigo-400/10 px-3 py-1 rounded-lg border border-indigo-400/20"
+                            id="pss_val">5</span>
+                    </div>
+                    <input type="range" name="pss_score" min="1" max="10" value="5" step="0.1"
+                        class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer"
+                        oninput="document.getElementById('pss_val').textContent = this.value">
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between mt-12 pt-8 border-t border-slate-800">
+            <button type="button" id="prevBtn"
+                class="px-8 py-3 rounded-xl border border-slate-700 text-slate-400 font-bold hover:bg-slate-800 transition invisible">
+                Back
+            </button>
+            <button type="button" id="nextBtn"
+                class="px-8 py-3 rounded-xl bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20 hover:bg-indigo-500 transition">
+                Continue <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Results Modal -->
+<div id="resultModal"
+    class="fixed inset-0 bg-slate-950/90 backdrop-blur-xl z-[200] flex items-center justify-center p-6 hidden">
+    <div class="glass-card max-w-2xl w-full rounded-[40px] p-10 text-center relative overflow-hidden">
+        <div id="loader" class="py-10">
+            <div
+                class="w-20 h-20 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-6">
+            </div>
+            <h3 class="text-2xl font-bold">Analysing your results...</h3>
+            <p class="text-slate-400 mt-2">Our AI models are processing your 19-factor profile.</p>
+        </div>
+        <div id="resultContent" class="hidden">
+            <div id="riskBadge"
+                class="inline-block px-6 py-2 rounded-full text-sm font-black uppercase tracking-widest mb-6"></div>
+            <h2 class="text-4xl font-bold mb-2">Predictive Analysis <span id="resRisk"></span></h2>
+            <p class="text-slate-400 mb-8">Risk Score: <span id="resScore" class="font-bold text-white"></span> / 10</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 text-left">
+                <div class="p-4 bg-slate-800/50 rounded-2xl border border-slate-700">
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-widest mb-1">Model Confidence</p>
+                    <p class="text-xl font-bold" id="resConfidence"></p>
+                </div>
+                <div class="p-4 bg-slate-800/50 rounded-2xl border border-slate-700">
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-widest mb-1">Architecture</p>
+                    <p class="text-xl font-bold" id="resModel"></p>
+                </div>
+            </div>
+
+            <!-- Suggestions Section -->
+            <div class="text-left mb-10">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <i class="fas fa-lightbulb text-amber-400"></i> Next Steps & Recommendations
+                </h3>
+                <div id="resRecs" class="space-y-3">
+                    <!-- Dynamic recs will be injected here -->
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <a href="/dashboard" class="flex-1 bg-indigo-600 py-4 rounded-2xl font-bold">View Full Analytics</a>
+                <button onclick="location.reload()"
+                    class="px-8 py-4 bg-slate-800 rounded-2xl font-bold border border-slate-700">Retake</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let currentStep = 1;
+        const totalSteps = 4;
+        const form = document.getElementById('screeningForm');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const bar = document.getElementById('progress-bar');
+        const stepCount = document.getElementById('step-count');
+        const stepPercent = document.getElementById('step-percent');
+
+        function updateProgress() {
+            const percent = (currentStep / totalSteps) * 100;
+            bar.style.width = percent + '%';
+            stepCount.textContent = `Step ${currentStep} of ${totalSteps}`;
+            stepPercent.textContent = `${percent}% Complete`;
+
+            prevBtn.classList.toggle('invisible', currentStep === 1);
+
+            if (currentStep === totalSteps) {
+                nextBtn.innerHTML = 'Generate Analysis <i class="fas fa-magic ml-2"></i>';
+                nextBtn.classList.replace('bg-indigo-600', 'bg-emerald-600');
+            } else {
+                nextBtn.innerHTML = 'Continue <i class="fas fa-arrow-right ml-2"></i>';
+                nextBtn.classList.replace('bg-emerald-600', 'bg-indigo-600');
+            }
+        }
+
+        nextBtn.addEventListener('click', async function () {
+            if (currentStep < totalSteps) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep++;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateProgress();
+            } else {
+                // Submit Form
+                const modal = document.getElementById('resultModal');
+                modal.classList.remove('hidden');
+
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                // Convert numeric fields
+                ['age', 'sleep_hours', 'screen_time', 'phq9_score', 'gad7_score', 'pss_score',
+                    'stress_level', 'physical_activity', 'social_support', 'work_life_balance',
+                    'self_esteem', 'coping_skills', 'mindfulness_practice'].forEach(f => {
+                        data[f] = parseFloat(data[f]) || 0;
+                    });
+
+                try {
+                    const response = await fetch('/predict', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    const res = await response.json();
+
+                    setTimeout(() => {
+                        document.getElementById('loader').classList.add('hidden');
+                        document.getElementById('resultContent').classList.remove('hidden');
+
+                        const level = res.risk_level;
+                        document.getElementById('resRisk').textContent = level;
+                        document.getElementById('resScore').textContent = res.risk_score;
+                        document.getElementById('resConfidence').textContent = res.confidence_score + '%';
+                        document.getElementById('resModel').textContent = res.model_used;
+
+                        // Inject Recommendations
+                        const recsContainer = document.getElementById('resRecs');
+                        recsContainer.innerHTML = '';
+                        res.recommendations.forEach(rec => {
+                            const recEl = document.createElement('div');
+                            recEl.className = 'p-4 bg-slate-800/30 rounded-2xl border border-slate-700/50 flex gap-4 items-start';
+                            recEl.innerHTML = `
+                                <div class="text-2xl">${rec.icon}</div>
+                                <div>
+                                    <p class="text-xs font-black uppercase tracking-widest text-slate-500 mb-1">${rec.category}</p>
+                                    <p class="text-sm text-slate-300 leading-relaxed">${rec.advice}</p>
+                                </div>
+                            `;
+                            recsContainer.appendChild(recEl);
+                        });
+
+                        const badge = document.getElementById('riskBadge');
+                        badge.textContent = level + ' Risk';
+                        if (level === 'High') {
+                            badge.className = 'inline-block px-6 py-2 rounded-full text-sm font-black uppercase tracking-widest mb-6 bg-rose-500/20 text-rose-500 border border-rose-500/30';
+                        } else if (level === 'Moderate') {
+                            badge.className = 'inline-block px-6 py-2 rounded-full text-sm font-black uppercase tracking-widest mb-6 bg-amber-500/20 text-amber-500 border border-amber-500/30';
+                        } else {
+                            badge.className = 'inline-block px-6 py-2 rounded-full text-sm font-black uppercase tracking-widest mb-6 bg-emerald-500/20 text-emerald-500 border border-emerald-500/30';
+                        }
+                    }, 1500);
+                } catch (e) {
+                    alert('Analysis failed. Please try again.');
+                    modal.classList.add('hidden');
+                }
+            }
+        });
+
+        prevBtn.addEventListener('click', function () {
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep--;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateProgress();
+            }
+        });
+    });
+</script>
+{% endblock %}

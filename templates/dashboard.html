@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics Dashboard - MindSight{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <header class="flex justify-between items-end mb-8">
+        <div>
+            <h1 class="text-3xl font-bold mb-2">Systems <span class="text-indigo-400">Dashboard</span></h1>
+            <p class="text-slate-400">Comprehensive overview of mental health metrics and system performance.</p>
+        </div>
+        <div class="flex gap-3">
+            <button
+                class="bg-indigo-600/10 text-indigo-400 px-4 py-2 rounded-xl border border-indigo-500/20 font-semibold text-sm">
+                <i class="fas fa-download mr-2"></i> Export Report
+            </button>
+            <button
+                class="bg-indigo-600 text-white px-4 py-2 rounded-xl font-semibold text-sm shadow-lg shadow-indigo-600/20">
+                <i class="fas fa-sync mr-2"></i> Refresh Data
+            </button>
+        </div>
+    </header>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <div class="glass-card p-6 rounded-3xl">
+            <div class="flex justify-between items-start mb-4">
+                <div class="w-12 h-12 bg-indigo-500/10 rounded-2xl flex items-center justify-center text-indigo-400">
+                    <i class="fas fa-database text-xl"></i>
+                </div>
+                <span class="text-emerald-400 text-xs font-bold bg-emerald-400/10 px-2 py-1 rounded-lg">+12%</span>
+            </div>
+            <h3 class="text-slate-400 text-sm font-medium mb-1">Total Records</h3>
+            <p class="text-3xl font-bold">{{ summary.total_records }}</p>
+        </div>
+
+        <div class="glass-card p-6 rounded-3xl">
+            <div class="flex justify-between items-start mb-4">
+                <div class="w-12 h-12 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400">
+                    <i class="fas fa-bullseye text-xl"></i>
+                </div>
+                <span class="text-purple-400 text-xs font-bold bg-purple-400/10 px-2 py-1 rounded-lg">Best</span>
+            </div>
+            <h3 class="text-slate-400 text-sm font-medium mb-1">Model Accuracy</h3>
+            <p class="text-3xl font-bold">{{ model_meta.accuracy }}%</p>
+        </div>
+
+        <div class="glass-card p-6 rounded-3xl">
+            <div class="flex justify-between items-start mb-4">
+                <div class="w-12 h-12 bg-rose-500/10 rounded-2xl flex items-center justify-center text-rose-400">
+                    <i class="fas fa-exclamation-triangle text-xl"></i>
+                </div>
+                <span class="text-slate-400 text-xs font-bold bg-slate-400/10 px-2 py-1 rounded-lg">Avg</span>
+            </div>
+            <h3 class="text-slate-400 text-sm font-medium mb-1">Avg Risk Score</h3>
+            <p class="text-3xl font-bold">{{ summary.avg_risk_score }}</p>
+        </div>
+
+        <div class="glass-card p-6 rounded-3xl">
+            <div class="flex justify-between items-start mb-4">
+                <div class="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-400">
+                    <i class="fas fa-check-double text-xl"></i>
+                </div>
+                <span class="text-emerald-400 text-xs font-bold bg-emerald-400/10 px-2 py-1 rounded-lg">Live</span>
+            </div>
+            <h3 class="text-slate-400 text-sm font-medium mb-1">System Health</h3>
+            <p class="text-3xl font-bold">Stable</p>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+        <!-- Personal Trend Chart -->
+        <div class="glass-card p-8 rounded-[40px]">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Personal Wellness <span class="text-indigo-400">Trend</span></h3>
+                <div class="flex gap-2">
+                    <span class="text-xs text-slate-500 bg-slate-800 px-2 py-1 rounded">Live Data</span>
+                </div>
+            </div>
+            <div class="h-80 w-full relative">
+                <canvas id="trendChart"></canvas>
+                <div id="trendLoader"
+                    class="absolute inset-0 flex items-center justify-center bg-slate-900/50 rounded-2xl hidden">
+                    <i class="fas fa-spinner fa-spin text-2xl text-indigo-400"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Risk Distribution -->
+        <div class="glass-card p-8 rounded-[40px]">
+            <h3 class="text-xl font-bold mb-6">Aggregate risk <span class="text-indigo-400">Profile</span></h3>
+            <div class="h-80 w-full flex items-center justify-center">
+                <canvas id="distributionChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advanced System Analytics (Requested in f14fa523-b7e9-48f0-a2f6-014eff552850) -->
+    <section class="mb-10">
+        <header class="mb-6">
+            <h2 class="text-2xl font-bold">Advanced <span class="text-indigo-400">System Analytics</span></h2>
+            <p class="text-slate-400 text-sm">Deep-dive visualisations into model performance and feature correlations.
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Feature Importance -->
+            <div class="glass-card p-4 rounded-3xl group">
+                <h4 class="text-sm font-bold text-slate-400 mb-3 px-2 flex justify-between">
+                    Feature Importance <i class="fas fa-info-circle text-indigo-500/50"></i>
+                </h4>
+                <div class="overflow-hidden rounded-2xl border border-slate-700/50">
+                    <img src="/static/images/feature_importance.png" alt="Feature Importance"
+                        class="w-full h-auto hover:scale-105 transition duration-500 cursor-zoom-in"
+                        onclick="window.open(this.src)">
+                </div>
+            </div>
+
+            <!-- Age vs Risk -->
+            <div class="glass-card p-4 rounded-3xl group">
+                <h4 class="text-sm font-bold text-slate-400 mb-3 px-2 flex justify-between">
+                    Age vs. Risk <i class="fas fa-users text-indigo-500/50"></i>
+                </h4>
+                <div class="overflow-hidden rounded-2xl border border-slate-700/50">
+                    <img src="/static/images/risk_by_age.png" alt="Age vs Risk"
+                        class="w-full h-auto hover:scale-105 transition duration-500 cursor-zoom-in"
+                        onclick="window.open(this.src)">
+                </div>
+            </div>
+
+            <!-- Gender vs Risk -->
+            <div class="glass-card p-4 rounded-3xl group">
+                <h4 class="text-sm font-bold text-slate-400 mb-3 px-2 flex justify-between">
+                    Gender Distribution <i class="fas fa-genderless text-indigo-500/50"></i>
+                </h4>
+                <div class="overflow-hidden rounded-2xl border border-slate-700/50">
+                    <img src="/static/images/risk_by_gender.png" alt="Gender vs Risk"
+                        class="w-full h-auto hover:scale-105 transition duration-500 cursor-zoom-in"
+                        onclick="window.open(this.src)">
+                </div>
+            </div>
+
+            <!-- Correlation Heatmap -->
+            <div class="glass-card p-4 rounded-3xl group lg:col-span-2">
+                <h4 class="text-sm font-bold text-slate-400 mb-3 px-2 flex justify-between">
+                    Feature Correlation Heatmap <i class="fas fa-th text-indigo-500/50"></i>
+                </h4>
+                <div class="overflow-hidden rounded-2xl border border-slate-700/50">
+                    <img src="/static/images/correlation_heatmap.png" alt="Correlation Heatmap"
+                        class="w-full h-auto hover:scale-105 transition duration-500 cursor-zoom-in"
+                        onclick="window.open(this.src)">
+                </div>
+            </div>
+
+            <!-- Model Comparison -->
+            <div class="glass-card p-4 rounded-3xl group">
+                <h4 class="text-sm font-bold text-slate-400 mb-3 px-2 flex justify-between">
+                    ML Model Comparison <i class="fas fa-balance-scale text-indigo-500/50"></i>
+                </h4>
+                <div class="overflow-hidden rounded-2xl border border-slate-700/50">
+                    <img src="/static/images/model_comparison.png" alt="Model Comparison"
+                        class="w-full h-auto hover:scale-105 transition duration-500 cursor-zoom-in"
+                        onclick="window.open(this.src)">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recommendations Overview -->
+    <div class="glass-card p-8 rounded-[40px]">
+        <h3 class="text-xl font-bold mb-8">AI-Generated <span class="text-indigo-400">Insights</span></h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-6 bg-slate-800/50 border border-slate-700 rounded-3xl">
+                <div class="text-indigo-400 mb-4 text-2xl"><i class="fas fa-lightbulb"></i></div>
+                <h4 class="font-bold mb-2">Sleep Optimization</h4>
+                <p class="text-sm text-slate-400">Current data suggests 6.5 hours average. Increasing this to 8 hours
+                    could reduce risk score by 15%.</p>
+            </div>
+            <div class="p-6 bg-slate-800/50 border border-slate-700 rounded-3xl">
+                <div class="text-purple-400 mb-4 text-2xl"><i class="fas fa-shield-alt"></i></div>
+                <h4 class="font-bold mb-2">Resilience Markers</h4>
+                <p class="text-sm text-slate-400">Your social support score is high (8.2), acting as a significant
+                    protective buffer against workplace stress.</p>
+            </div>
+            <div class="p-6 bg-slate-800/50 border border-slate-700 rounded-3xl">
+                <div class="text-rose-400 mb-4 text-2xl"><i class="fas fa-clock"></i></div>
+                <h4 class="font-bold mb-2">Screen Time Alert</h4>
+                <p class="text-sm text-slate-400">Sudden increase in evening screen time correlates with higher stress
+                    reports. Try a digital detox after 9 PM.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+        // Trend Chart Init
+        const ctxTrend = document.getElementById('trendChart').getContext('2d');
+        const trendLoader = document.getElementById('trendLoader');
+
+        // Distribution Chart Init (Static Fallback or Base)
+        const ctxDist = document.getElementById('distributionChart').getContext('2d');
+        new Chart(ctxDist, {
+            type: 'doughnut',
+            data: {
+                labels: ['Low Risk', 'Moderate Risk', 'High Risk'],
+                datasets: [{
+                    data: [65, 25, 10],
+                    backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#94a3b8', padding: 20, font: { size: 12, weight: '600' } }
+                    }
+                }
+            }
+        });
+
+        // Fetch Trend Data with Error Handling
+        try {
+            trendLoader.classList.remove('hidden');
+            const response = await fetch('/api/user-trends');
+            if (!response.ok) throw new Error('Failed to fetch trends');
+
+            const data = await response.json();
+            const trends = data.trends || [];
+            trendLoader.classList.add('hidden');
+
+            if (trends.length > 0) {
+                new Chart(ctxTrend, {
+                    type: 'line',
+                    data: {
+                        labels: trends.map(t => new Date(t.submitted_at).toLocaleDateString()),
+                        datasets: [{
+                            label: 'Risk Score (1-10)',
+                            data: trends.map(t => t.risk_score),
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            borderWidth: 3,
+                            pointBackgroundColor: '#6366f1',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 10,
+                                grid: { color: 'rgba(255,255,255,0.05)' },
+                                ticks: { color: '#94a3b8' }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#94a3b8' }
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Show "No Data" message on canvas
+                ctxTrend.font = "14px Inter";
+                ctxTrend.fillStyle = "#94a3b8";
+                ctxTrend.textAlign = "center";
+                ctxTrend.fillText("No screening history found yet.", ctxTrend.canvas.width / 2, ctxTrend.canvas.height / 2);
+            }
+        } catch (err) {
+            console.error('Trend Chart Error:', err);
+            trendLoader.classList.add('hidden');
+            ctxTrend.font = "14px Inter";
+            ctxTrend.fillStyle = "#ef4444";
+            ctxTrend.textAlign = "center";
+            ctxTrend.fillText("Failed to load trend data.", ctxTrend.canvas.width / 2, ctxTrend.canvas.height / 2);
+        }
+    });
+</script>
+{% endblock %}

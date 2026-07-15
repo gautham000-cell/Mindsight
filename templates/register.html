@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - MindSight</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #0f172a;
+            color: white;
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.1), transparent), radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.1), transparent);
+        }
+    </style>
+</head>
+
+<body class="hero-gradient min-h-screen flex items-center justify-center p-6 py-20">
+    <div class="max-w-xl w-full">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold">Start Your <span class="text-indigo-400">Journey</span></h1>
+            <p class="text-slate-400 mt-2">Join thousands of users prioritizing their mental clarity.</p>
+        </div>
+
+        <form action="/register" method="POST" class="glass-card p-10 rounded-[40px]">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="mb-6 p-4 rounded-xl text-sm font-medium bg-rose-500/10 text-rose-500 border border-rose-500/20">
+                <i class="fas fa-exclamation-triangle mr-2"></i> {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">First Name</label>
+                    <input type="text" name="first_name" placeholder="John"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-2xl py-4 px-6 focus:outline-none focus:border-indigo-600 transition"
+                        required>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Last Name</label>
+                    <input type="text" name="last_name" placeholder="Doe"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-2xl py-4 px-6 focus:outline-none focus:border-indigo-600 transition">
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Email Address</label>
+                    <input type="email" name="email" placeholder="john@example.com"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-2xl py-4 px-6 focus:outline-none focus:border-indigo-600 transition"
+                        required>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Username</label>
+                    <input type="text" name="username" placeholder="johndoe123"
+                        class="w-full bg-slate-900 border border-slate-700 rounded-2xl py-4 px-6 focus:outline-none focus:border-indigo-600 transition"
+                        required>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Password</label>
+                        <input type="password" name="password" placeholder="••••••••"
+                            class="w-full bg-slate-900 border border-slate-700 rounded-2xl py-4 px-6 focus:outline-none focus:border-indigo-600 transition"
+                            required>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Confirm</label>
+                        <input type="password" name="confirm_password" placeholder="••••••••"
+                            class="w-full bg-slate-900 border border-slate-700 rounded-2xl py-4 px-6 focus:outline-none focus:border-indigo-600 transition"
+                            required>
+                    </div>
+                </div>
+
+                <div class="px-1 py-4">
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" name="terms"
+                            class="mt-1 w-5 h-5 rounded bg-slate-800 border-slate-700 text-indigo-600 focus:ring-indigo-600">
+                        <span class="text-xs text-slate-400 leading-relaxed">I agree to the <a href="#"
+                                class="text-indigo-400 font-bold hover:underline">Terms of Service</a> and <a href="#"
+                                class="text-indigo-400 font-bold hover:underline">Privacy Policy</a>. I understand this
+                            tool is for informational purposes only.</span>
+                    </label>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-indigo-600 py-4 rounded-2xl font-bold shadow-xl shadow-indigo-600/20 hover:bg-indigo-500 transition">
+                    Create My Account
+                </button>
+            </div>
+        </form>
+
+        <p class="text-center mt-8 text-slate-500 text-sm">
+            Already have an account? <a href="/login" class="text-indigo-400 font-bold hover:underline">Sign In
+                Instead</a>
+        </p>
+    </div>
+</body>
+
+</html>

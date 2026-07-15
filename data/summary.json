@@ -1,0 +1,7 @@
+{
+  "total_records": 50000,
+  "features_count": 25,
+  "best_model": "Ensemble Voting Classifier (XGB+RF+GBT)",
+  "accuracy": 95.17,
+  "avg_risk_score": 4.41
+}

@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} - MindSight{% endblock %}
+
+{% block head %}
+<style>
+    .article-content h2 {
+        font-size: 1.875rem;
+        font-weight: 700;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: #818cf8;
+    }
+
+    .article-content h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        color: #c7d2fe;
+    }
+
+    .article-content p {
+        margin-bottom: 1.25rem;
+        line-height: 1.8;
+        color: #94a3b8;
+    }
+
+    .article-content ul,
+    .article-content ol {
+        margin-bottom: 1.5rem;
+        padding-left: 1.5rem;
+        color: #94a3b8;
+    }
+
+    .article-content li {
+        margin-bottom: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <a href="/resources"
+        class="inline-flex items-center gap-2 text-slate-400 hover:text-indigo-400 transition mb-8 group">
+        <i class="fas fa-arrow-left text-xs group-hover:-translate-x-1 transition-transform"></i>
+        <span class="font-bold text-sm uppercase tracking-widest">Back to Library</span>
+    </a>
+
+    <div class="glass-card rounded-[48px] overflow-hidden">
+        <div class="h-[400px] w-full relative">
+            <img src="{{ article.image }}" alt="{{ article.title }}" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
+
+            <div class="absolute bottom-12 left-12 right-12">
+                <span
+                    class="bg-{{ article.color or 'indigo' }}-600 text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-[0.2em] mb-4 inline-block shadow-lg">
+                    {{ article.category }}
+                </span>
+                <h1 class="text-4xl md:text-5xl font-black leading-tight">{{ article.title }}</h1>
+                <div class="flex items-center gap-6 mt-6 text-slate-400 font-bold text-xs uppercase tracking-widest">
+                    <span><i class="far fa-clock mr-2 text-indigo-400"></i> {{ article.read_time }} Reading Time</span>
+                    <span><i class="far fa-calendar-alt mr-2 text-indigo-400"></i> Updated March 2024</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-12 md:p-16 article-content">
+            {{ article.content|safe }}
+
+            <div
+                class="mt-16 pt-12 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-brain text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-white font-bold text-sm">MindSight Editorial Team</p>
+                        <p class="text-slate-500 text-xs text-uppercase font-bold tracking-widest">Science-Backed
+                            Insights</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6">
+                    {% if article.source_url %}
+                    <a href="{{ article.source_url }}" target="_blank"
+                        class="bg-indigo-600 px-6 py-3 rounded-xl font-bold text-sm hover:bg-indigo-500 transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/20">
+                        Read Original Source <i class="fas fa-external-link-alt text-[10px]"></i>
+                    </a>
+                    {% endif %}
+                    <div class="flex gap-3">
+                        <button
+                            class="w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center hover:bg-slate-700 transition"
+                            title="Save to Favorites">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
